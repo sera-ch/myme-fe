@@ -1,22 +1,25 @@
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Header from "./Header";
+import { useState } from "react";
 
 function UploadMemeForm() {
     const apiBaseUrl = process.env.API_BASE_URL;
+    const [invalidTitle, setInvalidTitle] = useState(false)
+    const [invalidFile, setInvalidFile] = useState(false)
     const navigate = useNavigate();
     return (
         <>
-            <Header></Header>
+            <Header search={ false }></Header>
             <div className='row'>
                 <div className='col-4'>
                 </div>
                 <form id='login-form' onSubmit={uploadMeme} className='col-4'>
                     <div className='input row'>
-                        <label htmlFor='title' className='col-3'>
+                        <label htmlFor='title' className='col-3 required'>
                             Title
                         </label>
-                        <input id='title' name='title' type='text' className='col-9' />
+                        <input id='title' name='title' onChange={(event) => validateTitle(event)} type='text' className={invalidTitle ? 'col-9 invalid' : 'col-9'} />
                     </div>
                     <div className='input row'>
                         <label htmlFor='desc' className='col-3'>
@@ -43,10 +46,10 @@ function UploadMemeForm() {
                         <textarea id='misc' name='misc' className='col-9' />
                     </div>
                     <div className='input row'>
-                        <label htmlFor='file' className='col-3'>
+                        <label htmlFor='file' className='col-3 required'>
                             Image
                         </label>
-                        <input id='file' name='file' type='file' className='col-9' />
+                        <input id='file' onChange={(event) => validateFile(event)} name='file' type='file' className={invalidFile ? 'col-9 invalid' : 'col-9'} />
                     </div>
                     <div className='input row'>
                         <button type='submit' id='submit' className='col-3'>Upload</button>
@@ -58,15 +61,40 @@ function UploadMemeForm() {
         </>
     );
 
+    function validateFile(event: any) {
+        setInvalidFile(event.target.files[0] == undefined)
+    }
+
+    function validateTitle(event: any) {
+        setInvalidTitle(event.target.value == '')
+    }
+
     function uploadMeme(event:any) {
         event.preventDefault();
+        const title = event.target[0].value
+        const desc = event.target[1].value
+        const character_tags = event.target[2].value
+        const source_tags = event.target[3].value
+        const misc_tags = event.target[4].value
+        const file = event.target[5].files[0]
+        if (title == '' || file == undefined) {
+            if (title == '') {
+                setInvalidTitle(true)
+            }
+            if (file == undefined) {
+                setInvalidFile(true)
+            }
+            return
+        }
+        setInvalidTitle(false)
+        setInvalidFile(false)
         const request = {
-            title: event.target[0].value,
-            desc: event.target[1].value,
-            character_tags: event.target[2].value,
-            source_tags: event.target[3].value,
-            misc_tags: event.target[4].value,
-            file: event.target[5].files[0],
+            title: title,
+            desc: desc,
+            character_tags: character_tags,
+            source_tags: source_tags,
+            misc_tags: misc_tags,
+            file: file
         }
         const config = {
             headers: {
