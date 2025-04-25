@@ -314,3 +314,9 @@ span.breadcrumb {
     color: #ff8d00;
     font-size: 300%;
 }
+
+div.list.row .card,
+.search-form input {
+    margin-left: auto;
+    margin-right: auto;
+}
