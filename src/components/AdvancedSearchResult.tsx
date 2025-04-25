@@ -1,8 +1,10 @@
-import { SyntheticEvent, useCallback, useContext, useEffect, useState } from "react";
+import { SyntheticEvent, useCallback, useEffect, useState } from "react";
 import Header from "./Header";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Card from "./Card";
+import tag from "../objects/Tag"
+import meme from "../objects/Meme"
 import { Spinner } from "react-bootstrap";
 
 function AdvancedSearchResult() {
@@ -71,7 +73,7 @@ function AdvancedSearchResult() {
                             "We did not find anything. Try another query?"
                         ) :
                         (
-                            memes.map((item) => (<Card key={item.title} showBigImage={(event) => showBigImage(event, item.image_url)} hideBigImage={hideBigImage} title={item.title} desc={item.desc} imageUrl={item.image_url} tags={item.tags} />))
+                                memes.map((item: meme) => (<Card key={item.title} showBigImage={(event) => showBigImage(event, item.image_url)} title={item.title} desc={item.desc} imageUrl={item.image_url} tags={item.tags} />))
                         )
                     }
                 </div>

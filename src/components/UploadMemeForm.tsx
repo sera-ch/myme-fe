@@ -2,6 +2,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Header from "./Header";
 import { SyntheticEvent, useState } from "react";
+import form from "../objects/Form";
 
 function UploadMemeForm() {
     const apiBaseUrl = process.env.API_BASE_URL;
@@ -14,7 +15,7 @@ function UploadMemeForm() {
             <div className='row'>
                 <div className='col-4'>
                 </div>
-                <form id='login-form' onSubmit={uploadMeme} className='col-4'>
+                <form id='login-form' onSubmit={event => uploadMeme(event, event as unknown as form)} className='col-4'>
                     <div className='input row'>
                         <label htmlFor='title' className='col-3 required'>
                             Title
@@ -62,21 +63,23 @@ function UploadMemeForm() {
     );
 
     function validateFile(event: SyntheticEvent) {
-        setInvalidFile(event.target.files[0] == undefined)
+        const form = event.target as HTMLInputElement
+        setInvalidFile(form.files == undefined || form.files[0] == undefined)
     }
 
     function validateTitle(event: SyntheticEvent) {
-        setInvalidTitle(event.target.value == '')
+        setInvalidTitle((event.target as HTMLInputElement).value == '')
     }
 
-    function uploadMeme(event:SyntheticEvent) {
+    function uploadMeme(event: SyntheticEvent, form: form) {
+        if (form.target[5].files == undefined) return
         event.preventDefault();
-        const title = event.target[0].value
-        const desc = event.target[1].value
-        const character_tags = event.target[2].value
-        const source_tags = event.target[3].value
-        const misc_tags = event.target[4].value
-        const file = event.target[5].files[0]
+        const title = form.target[0].value
+        const desc = form.target[1].value
+        const character_tags = form.target[2].value
+        const source_tags = form.target[3].value
+        const misc_tags = form.target[4].value
+        const file = (form.target[5]).files[0]
         if (title == '' || file == undefined) {
             if (title == '') {
                 setInvalidTitle(true)

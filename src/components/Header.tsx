@@ -1,4 +1,4 @@
-﻿import { FormEvent, SyntheticEvent, useEffect, useState } from "react";
+﻿import { SyntheticEvent, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import form from "../objects/Form";
 
