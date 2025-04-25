@@ -46,7 +46,9 @@ function List() {
                                 <Spinner variant='light' animation='border' role='status'></Spinner>
                             </div>
                         ) : (
-                                memes.map((item) => (<Card key={ item.title } showBigImage={(event:SyntheticEvent) => showBigImage(event, item.image_url)} title={item.title} desc={item.desc} imageUrl={item.image_url} tags={item.tags} />))
+                            <div className='card-container row'>
+                                    {memes.map((item) => (<Card key={item.title} showBigImage={(event: SyntheticEvent) => showBigImage(event, item.image_url)} title={item.title} desc={item.desc} imageUrl={item.image_url} tags={item.tags} />))}
+                            </div>
                         )
                         }
                 </div>

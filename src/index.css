@@ -185,7 +185,7 @@ button.search-btn:hover {
 }
 
 .image-container img {
-    max-width: 250px;
+    max-width: 200px;
 }
 
 .big-image {
@@ -211,7 +211,7 @@ button.search-btn:hover {
     left: 0;
     right: 0;
     margin: auto;
-    max-width: 500px;
+    max-width: 600px;
     height: auto;
 }
 
@@ -319,8 +319,26 @@ span.back-nav {
     font-size: 300%;
 }
 
-div.list.row .card,
-.search-form input {
+div.list.row .card {
     margin-left: auto;
     margin-right: auto;
 }
+
+.card-container {
+    position: absolute;
+}
+
+    @media screen and (min-width: 0px) {
+
+        .card-container {
+            top: -20px;
+        }
+    }
+
+    @media screen and (min-width: 1600px) {
+
+        .card-container {
+            top: -250px;
+        }
+
+    }
