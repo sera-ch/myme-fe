@@ -20,7 +20,7 @@ function Header({ search }: {search:boolean}) {
             <div className='header row col-10'>
                 <nav>
                     <ul>
-                        <a href='/'>
+                        <a href='' onClick={ navigateToHome }>
                             <li className='logo'>
                                 <h1>Myme</h1>
                             </li>
@@ -66,6 +66,11 @@ function Header({ search }: {search:boolean}) {
             </div>
         </>
     )
+
+    function navigateToHome(event: SyntheticEvent) {
+        event.preventDefault()
+        navigate('/', { replace: true })
+    }
 
     function navigateToLogin(event: SyntheticEvent) {
         event.preventDefault()
