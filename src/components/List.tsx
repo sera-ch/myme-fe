@@ -1,6 +1,8 @@
 import { useCallback, useEffect, useState } from "react";
 import Card from "./Card";
 import axios from "axios";
+import { Spinner } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 
 function List() {
 
@@ -9,12 +11,15 @@ function List() {
     const [display, setDisplay] = useState(false);
     const [loading, setLoading] = useState(true);
     const apiBaseUrl = process.env.API_BASE_URL;
+    const navigate = useNavigate();
 
     useEffect(() => {
         axios.get(apiBaseUrl + '/meme/list')
             .then(response => {
                 setMemes(response.data.content)
                 setLoading(false)
+            }).catch(error => {
+                navigate("/error", { state: { code: error.response.data.code, message: error.response.data.message } })
             })
     }, [])
 
@@ -36,7 +41,9 @@ function List() {
                 <div className='list row'>
                     {
                         loading ? (
-                            "Loading"
+                            <div className='loading'>
+                                <Spinner variant='light' animation='border' role='status'></Spinner>
+                            </div>
                         ) : (
                                 memes.map((item) => (<Card key={ item.title } showBigImage={(event) => showBigImage(event, item.image_url)} hideBigImage={hideBigImage} title={item.title} desc={item.desc} imageUrl={item.image_url} tags={item.tags} />))
                         )

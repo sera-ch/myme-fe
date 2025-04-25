@@ -68,14 +68,12 @@ function LoginForm() {
             apiBaseUrl + '/user',
             request
         ).then(response => {
-            if (response.status == 200) {
                 sessionStorage.setItem('token', response.data.token);
                 sessionStorage.setItem('userRole', response.data.role);
                 navigate("/")
-            } else {
-                navigate("/error", { errorCode: response.data.code })
-            }
-        });
+        }).catch(error => {
+            navigate("/error", { state: { code: error.response.data.code, message: error.response.data.message } })
+        })
     }
 }
 

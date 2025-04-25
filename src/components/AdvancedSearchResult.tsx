@@ -5,7 +5,7 @@ import axios from "axios";
 import Card from "./Card";
 import { Spinner } from "react-bootstrap";
 
-function SearchResult() {
+function AdvancedSearchResult() {
 
     const [memes, setMemes] = useState([]);
     const [currentMeme, setCurrentMeme] = useState('');
@@ -14,13 +14,14 @@ function SearchResult() {
     const [found, setFound] = useState(true);
     const apiBaseUrl = process.env.API_BASE_URL;
     const location = useLocation();
-    const text = location.state;
+    const tags = location.state;
     const navigate = useNavigate();
 
     useEffect(() => {
-        axios.post(apiBaseUrl + '/meme', {
-            text: text
-        })
+        const request = {
+            tags: tags
+        }
+        axios.post(apiBaseUrl + '/meme/v2/search', request)
             .then(response => {
                 if (response.data.content.length > 0) {
                     setFound(true);
@@ -49,7 +50,16 @@ function SearchResult() {
     return (
         <>
             <Header search={false}></Header>
-            <h2>{ text }</h2>
+            <div className='tagList'>
+                <h2>Search result for</h2>
+                <div className='tags'>
+                    {
+                        tags
+                            .sort((a: any, b: any) => a.type > b.type ? 1 : -1)
+                            .map((tag: any) => (<a key={tag.name + "_" + tag.type} href='' onClick={(event) => { event.preventDefault() }}><span className={'tag tag_' + tag.type}>{tag.name}</span></a>))
+                    }
+                </div>
+            </div>
             <div>
                 <div className='list row'>
                     {
@@ -78,4 +88,4 @@ function SearchResult() {
 
 }
 
-export default SearchResult;
+export default AdvancedSearchResult;

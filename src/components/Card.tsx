@@ -16,7 +16,7 @@ function Card({ title, desc, imageUrl, tags, showBigImage }: { title: any, desc:
                     {
                         tags
                             .sort((a:any, b:any) => a.type > b.type ? 1 : -1)
-                            .map((tag: any) => (<a key={tag.name + "_" + tag.type} href='' onClick={(event) => { event.preventDefault() }}><span className={'tag tag_' + tag.type} key={title + "_" + tag.name + "_" + tag.type}>{tag.name}</span></a>))
+                            .map((tag: any) => (<a key={tag.name + "_" + tag.type + "_" + imageUrl} href='' onClick={(event) => { event.preventDefault() }}><span className={'tag tag_' + tag.type} key={title + "_" + tag.name + "_" + tag.type}>{tag.name}</span></a>))
                     }
                 </div>
             </div>

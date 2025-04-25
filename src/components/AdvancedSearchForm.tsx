@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import Header from "./Header";
 import { Dropdown } from "react-bootstrap";
 import { useEffect, useState } from "react";
+import { X } from "react-bootstrap-icons";
 
 function AdvancedSearchForm() {
     const navigate = useNavigate();
@@ -19,11 +20,12 @@ function AdvancedSearchForm() {
 
     return (
         <>
-            <Header search={ false }></Header>
+            <Header search={false}></Header>
+            <h2>Advanced Search</h2>
             <div className='row'>
-                <div className='col-4'>
+                <div className='col-2 d-none d-md-block'>
                 </div>
-                <form id='login-form' onSubmit={searchMeme} className='col-4'>
+                <form id='adv-search-form' onSubmit={searchMeme} className='col-8'>
                     <div className='input row'>
                         <label htmlFor='tags' className='col-3 required'>
                             Tags
@@ -31,13 +33,13 @@ function AdvancedSearchForm() {
                         <div className='col-8 tag-list'>
                             {
                                 selectedTags.map((tag: any) => (
-                                    <a href='' onClick={(event) => event.preventDefault()}>
-                                        <span key={tag.name + "_" + tag.type} className={'tag tag_' + tag.type}>{tag.name}</span>
+                                    <a href='' onClick={(event) => removeTag(event, tag.name, tag.type)}>
+                                        <span key={tag.name + "_" + tag.type} className={'tag tag_' + tag.type}>{tag.name}<X></X></span>
                                     </a>))
                             }
                         </div>
                         <Dropdown className = 'col-9'>
-                            <Dropdown.Toggle id='tag-select'>
+                            <Dropdown.Toggle variant='outline-primary' id='tag-select'>
                                 Select tag
                             </Dropdown.Toggle>
                             <Dropdown.Menu className = 'dropdown-menu'>
@@ -51,11 +53,11 @@ function AdvancedSearchForm() {
                             </Dropdown.Menu>
                         </Dropdown>
                     </div>
-                    <div className='input row'>
-                        <button type='submit' id='submit' className='col-3'>Search</button>
+                    <div className='input row adv-search-btn'>
+                        <button type='submit' id='submit' className='col-3' disabled={ selectedTags.length == 0 }>Search</button>
                     </div>
                 </form>
-                <div className='col-4'>
+                <div className='col-2 d-none d-md-block'>
                 </div>
             </div>
         </>
@@ -74,12 +76,15 @@ function AdvancedSearchForm() {
         ])
     }
 
+    function removeTag(event: any, tagName: string, tagType: string) {
+        event.preventDefault();
+        const newSelectedTags = selectedTags.filter(tag => tag.name != tagName || tag.type != tagType)
+        setSelectedTags(newSelectedTags);
+    }
+
     function searchMeme(event: any) {
         event.preventDefault();
-        const request = {
-            tags: selectedTags
-        }
-        console.log(request) // TODO: Call search V2
+        navigate('/search/advanced/result', { state: selectedTags })
     }
 }
 

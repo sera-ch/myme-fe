@@ -103,12 +103,10 @@ function UploadMemeForm() {
             }
         };
         axios.post(apiBaseUrl + '/meme/v2/upload', request, config)
-            .then((response) => {
-                if (response.status == 200) {
-                    navigate('/');
-                } else {
-                    navigate('/error', errorCode=response.data.code)
-                }
+            .then(() => {
+                navigate('/');
+            }).catch(error => {
+                navigate("/error", { state: { code: error.response.data.code, message: error.response.data.message } })
             })
     }
 }
