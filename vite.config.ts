@@ -7,8 +7,7 @@ export default defineConfig(({ mode }) => {
     const env = loadEnv(mode, process.cwd(), '');
     return {
         define: {
-            'process.env.API_BASE_URL': JSON.stringify(env.API_BASE_URL),
-            base: "/myme/"
+            'process.env.API_BASE_URL': JSON.stringify(env.API_BASE_URL)
         },
         plugins: [react()],
   
