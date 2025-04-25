@@ -10,6 +10,6 @@ export default defineConfig(({ mode }) => {
             'process.env.API_BASE_URL': JSON.stringify(env.API_BASE_URL)
         },
         plugins: [react()],
-        base: '/myme/'
+        base: '/myme-fe/'
  }
 })
