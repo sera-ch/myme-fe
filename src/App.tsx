@@ -10,7 +10,7 @@ import AdvancedSearchResult from './components/AdvancedSearchResult';
 
 function App() {
     return (
-        <BrowserRouter basename={ "/myme-fe/" }>
+        <BrowserRouter basename={ "/myme-fe" }>
             <Routes>
                 <Route path="/" element={<Home />}/>
                 <Route path="/login" element={<LoginForm />} />
