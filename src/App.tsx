@@ -12,13 +12,13 @@ function App() {
     return (
         <BrowserRouter basename={ "/myme-fe/" }>
             <Routes>
-                <Route path="/myme-fe/" element={<Home />}/>
-                <Route path="/myme-fe/login" element={<LoginForm />} />
-                <Route path="/myme-fe/error" element={<Error/>} />
-                <Route path="/myme-fe/upload" element={<UploadMemeForm />} />
-                <Route path="/myme-fe/search" element={<SearchResult />} />
-                <Route path="/myme-fe/search/advanced" element={<AdvancedSearchForm />} />
-                <Route path="/myme-fe/search/advanced/result" element={<AdvancedSearchResult />} />
+                <Route path="/" element={<Home />}/>
+                <Route path="/login" element={<LoginForm />} />
+                <Route path="/error" element={<Error/>} />
+                <Route path="/upload" element={<UploadMemeForm />} />
+                <Route path="/search" element={<SearchResult />} />
+                <Route path="/search/advanced" element={<AdvancedSearchForm />} />
+                <Route path="/search/advanced/result" element={<AdvancedSearchResult />} />
             </Routes>
         </BrowserRouter>
     );
