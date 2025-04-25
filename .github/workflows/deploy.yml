@@ -2,48 +2,57 @@ name: Deploy
 
 on:
   push:
-    branches:
-      - main
+    branches: '*'
+  schedule:
+    - cron: '37 */4 * * *'
+  workflow_dispatch:
 
 jobs:
   build:
-    name: Build
     runs-on: ubuntu-latest
+    container: davorg/perl-perlanet:latest
 
     steps:
-      - name: Checkout repo
-        uses: actions/checkout@v3
+    - name: Checkout
+      uses: actions/checkout@v3
 
-      - name: Setup Node
-        uses: actions/setup-node@v3
+    - name: Create pages
+      run: |
+        mkdir -p docs
+        perlanet > perlanet.log 2>&1
+    - name: Commit new page
+      if: github.repository == 'davorg/planetperl'
+      run: |
+        git config --global --add safe.directory /__w/planetperl/planetperl
+        GIT_STATUS=$(git status --porcelain)
+        echo $GIT_STATUS
+        git config user.name github-actions[bot]
+        git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+        git add docs/
+        if [ "$GIT_STATUS" != "" ]; then git commit -m "Automated Web page generation"; fi
+        if [ "$GIT_STATUS" != "" ]; then git push; fi
+    - name: Archive perlanet logs
+      uses: actions/upload-artifact@v3
+      with:
+        name: perlanet.log
+        path: ./perlanet.log
+        retention-days: 3
 
-      - name: Install dependencies
-        uses: bahmutov/npm-install@v1
-
-      - name: Build project
-        run: npm run build
-
-      - name: Upload production-ready build files
-        uses: actions/upload-artifact@v3
-        with:
-          name: production-files
-          path: ./dist
+    - name: Update pages artifact
+      uses: actions/upload-pages-artifact@v1
+      with:
+        path: docs/
 
   deploy:
-    name: Deploy
     needs: build
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${\{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
-
     steps:
-      - name: Download artifact
-        uses: actions/download-artifact@v3
-        with:
-          name: production-files
-          path: ./dist
-
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dist
+    - name: Deploy to GitHub Pages
+      id: deployment
+      uses: actions/deploy-pages@v1
