@@ -1,4 +1,4 @@
-:root {
+﻿:root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
@@ -292,6 +292,10 @@ span.breadcrumb {
     font-variant: small-caps;
     font-size: smaller;
     color: #8c8c8c;
+}
+
+span.back-nav {
+    font-variant: small-caps;
 }
 
 .breadcrumb::before {

@@ -53,6 +53,9 @@ function Header({ search }: {search:boolean}) {
                     <span className='breadcrumb small'>
                         { path }
                     </span>
+                    <a href='' onClick={ navigateBack }><span className='back-nav small'>◂Go back</span></a>
+                </div>
+                <div>
                 </div>
                 {
                     search ? (
@@ -66,6 +69,11 @@ function Header({ search }: {search:boolean}) {
             </div>
         </>
     )
+
+    function navigateBack(event: SyntheticEvent) {
+        event.preventDefault()
+        navigate('..')
+    }
 
     function navigateToHome(event: SyntheticEvent) {
         event.preventDefault()
