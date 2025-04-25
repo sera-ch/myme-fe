@@ -1,13 +1,14 @@
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Header from "./Header";
+import tag from "../objects/Tag";
 import { Dropdown } from "react-bootstrap";
-import { useEffect, useState } from "react";
+import { SyntheticEvent, useEffect, useState } from "react";
 import { X } from "react-bootstrap-icons";
 
 function AdvancedSearchForm() {
     const navigate = useNavigate();
-    const [selectedTags, setSelectedTags] = useState([]);
+    const [selectedTags, setSelectedTags] = useState<tag[]>([]);
     const [tags, setTags] = useState([]);
     const apiBaseUrl = process.env.API_BASE_URL;
 
@@ -32,7 +33,7 @@ function AdvancedSearchForm() {
                         </label>
                         <div className='col-8 tag-list'>
                             {
-                                selectedTags.map((tag: any) => (
+                                selectedTags.map((tag: tag) => (
                                     <a href='' onClick={(event) => removeTag(event, tag.name, tag.type)}>
                                         <span key={tag.name + "_" + tag.type} className={'tag tag_' + tag.type}>{tag.name}<X></X></span>
                                     </a>))
@@ -44,11 +45,11 @@ function AdvancedSearchForm() {
                             </Dropdown.Toggle>
                             <Dropdown.Menu className = 'dropdown-menu'>
                                 {
-                                    tags.map((tag: any) => (<Dropdown.Item
+                                    tags.map((tag: tag) => (<Dropdown.Item
                                         disabled={selectedTags.some(
                                             it => it.name == tag.name && it.type == tag.type
                                         )}
-                                        href='' key={tag.name + "_" + tag.type} onClick={(event) => addTag(event, tag.name, tag.type)} className={'tag-select tag-type-' + tag.type}>{tag.name}</Dropdown.Item>))
+                                        href='' key={tag.name + "_" + tag.type} onClick={() => addTag(tag.name, tag.type)} className={'tag-select tag-type-' + tag.type}>{tag.name}</Dropdown.Item>))
                                 }
                             </Dropdown.Menu>
                         </Dropdown>
@@ -63,7 +64,7 @@ function AdvancedSearchForm() {
         </>
     );
 
-    function addTag(event: any, tagName: string, tagType: string) {
+    function addTag(tagName: string, tagType: string) {
         if (selectedTags.some(
             tag => tag.name == tagName && tag.type == tagType
         )) return
@@ -76,13 +77,13 @@ function AdvancedSearchForm() {
         ])
     }
 
-    function removeTag(event: any, tagName: string, tagType: string) {
+    function removeTag(event: SyntheticEvent, tagName: string, tagType: string) {
         event.preventDefault();
         const newSelectedTags = selectedTags.filter(tag => tag.name != tagName || tag.type != tagType)
         setSelectedTags(newSelectedTags);
     }
 
-    function searchMeme(event: any) {
+    function searchMeme(event: SyntheticEvent) {
         event.preventDefault();
         navigate('/search/advanced/result', { state: selectedTags })
     }

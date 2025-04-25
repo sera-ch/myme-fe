@@ -1,6 +1,6 @@
-﻿import { useEffect, useState } from "react";
-import { ArrowRight } from "react-bootstrap-icons";
-import { replace, useLocation, useNavigate } from "react-router-dom";
+﻿import { FormEvent, SyntheticEvent, useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import form from "../objects/Form";
 
 function Header({ search }: {search:boolean}) {
 
@@ -12,7 +12,7 @@ function Header({ search }: {search:boolean}) {
 
     useEffect(() => {
         setLoggedIn(sessionStorage.getItem('token') != undefined);
-        setUserRole(sessionStorage.getItem('userRole'));
+        setUserRole(sessionStorage.getItem('userRole') || '');
     }, [])
 
     return (
@@ -56,7 +56,7 @@ function Header({ search }: {search:boolean}) {
                 </div>
                 {
                     search ? (
-                        <form className='search-form row d-none d-xxl-block' onSubmit={(event) => searchMeme(event)}>
+                        <form className='search-form row d-none d-xxl-block' onSubmit={(event) => searchMeme(event, event as unknown as form)}>
                             <input className='search-bar col-8' type='text' onChange={ (event) => setQuery(event.target.value) } placeholder='Input text' />
                             <button className='col-1 btn search-btn' type='submit' disabled={query == ''}>Search</button>
                             <button className='col-2 btn search-btn' type='submit' onClick={(event) => advancedSearch(event)}>Advanced search</button>
@@ -67,17 +67,17 @@ function Header({ search }: {search:boolean}) {
         </>
     )
 
-    function navigateToLogin(event: any) {
+    function navigateToLogin(event: SyntheticEvent) {
         event.preventDefault()
         navigate('/login', {replace: true})
     }
 
-    function navigateToUpload(event: any) {
+    function navigateToUpload(event: SyntheticEvent) {
         event.preventDefault()
         navigate('/upload', {replace: true})
     }
 
-    function logOut(event: any) {
+    function logOut(event: SyntheticEvent) {
         event.preventDefault()
         sessionStorage.removeItem("userRole");
         sessionStorage.removeItem("token");
@@ -85,12 +85,12 @@ function Header({ search }: {search:boolean}) {
         setLoggedIn(false);
     }
 
-    function searchMeme(event: any) {
+    function searchMeme(event: SyntheticEvent, form: form) {
         event.preventDefault()
-        navigate('/search', { state: event.target[0].value, replace: true })
+        navigate('/search', { state: form.target[0].value, replace: true })
     }
 
-    function advancedSearch(event: any) {
+    function advancedSearch(event: SyntheticEvent) {
         event.preventDefault()
         navigate('/search/advanced', {replace: true})
     }

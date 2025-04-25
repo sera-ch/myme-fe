@@ -1,12 +1,13 @@
-import { useCallback, useEffect, useState } from "react";
+import { SyntheticEvent, useCallback, useEffect, useState } from "react";
 import Card from "./Card";
 import axios from "axios";
+import meme from "../objects/Meme";
 import { Spinner } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 
 function List() {
 
-    const [memes, setMemes] = useState([]);
+    const [memes, setMemes] = useState<meme[]>([]);
     const [currentMeme, setCurrentMeme] = useState('');
     const [display, setDisplay] = useState(false);
     const [loading, setLoading] = useState(true);
@@ -23,13 +24,13 @@ function List() {
             })
     }, [])
 
-    const showBigImage = useCallback((event: any, imageUrl: string) => {
+    const showBigImage = useCallback((event: SyntheticEvent, imageUrl: string) => {
         event.preventDefault();
         setDisplay(true);
         setCurrentMeme(imageUrl)
     }, []);
 
-    const hideBigImage = (event: any) => {
+    const hideBigImage = (event: SyntheticEvent) => {
         event.preventDefault();
         setDisplay(false);
         setCurrentMeme('')
@@ -45,7 +46,7 @@ function List() {
                                 <Spinner variant='light' animation='border' role='status'></Spinner>
                             </div>
                         ) : (
-                                memes.map((item) => (<Card key={ item.title } showBigImage={(event) => showBigImage(event, item.image_url)} hideBigImage={hideBigImage} title={item.title} desc={item.desc} imageUrl={item.image_url} tags={item.tags} />))
+                                memes.map((item) => (<Card key={ item.title } showBigImage={(event:SyntheticEvent) => showBigImage(event, item.image_url)} title={item.title} desc={item.desc} imageUrl={item.image_url} tags={item.tags} />))
                         )
                         }
                 </div>

@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Header from "./Header";
-import { useState } from "react";
+import { SyntheticEvent, useState } from "react";
 
 function UploadMemeForm() {
     const apiBaseUrl = process.env.API_BASE_URL;
@@ -61,15 +61,15 @@ function UploadMemeForm() {
         </>
     );
 
-    function validateFile(event: any) {
+    function validateFile(event: SyntheticEvent) {
         setInvalidFile(event.target.files[0] == undefined)
     }
 
-    function validateTitle(event: any) {
+    function validateTitle(event: SyntheticEvent) {
         setInvalidTitle(event.target.value == '')
     }
 
-    function uploadMeme(event:any) {
+    function uploadMeme(event:SyntheticEvent) {
         event.preventDefault();
         const title = event.target[0].value
         const desc = event.target[1].value

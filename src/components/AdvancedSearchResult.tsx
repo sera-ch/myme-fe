@@ -1,4 +1,4 @@
-import { useCallback, useContext, useEffect, useState } from "react";
+import { SyntheticEvent, useCallback, useContext, useEffect, useState } from "react";
 import Header from "./Header";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -35,13 +35,13 @@ function AdvancedSearchResult() {
             })
     }, [])
 
-    const showBigImage = useCallback((event: any, imageUrl: string) => {
+    const showBigImage = useCallback((event: SyntheticEvent, imageUrl: string) => {
         event.preventDefault();
         setDisplay(true);
         setCurrentMeme(imageUrl)
     }, []);
 
-    const hideBigImage = (event: any) => {
+    const hideBigImage = (event: SyntheticEvent) => {
         event.preventDefault();
         setDisplay(false);
         setCurrentMeme('')
@@ -55,8 +55,8 @@ function AdvancedSearchResult() {
                 <div className='tags'>
                     {
                         tags
-                            .sort((a: any, b: any) => a.type > b.type ? 1 : -1)
-                            .map((tag: any) => (<a key={tag.name + "_" + tag.type} href='' onClick={(event) => { event.preventDefault() }}><span className={'tag tag_' + tag.type}>{tag.name}</span></a>))
+                            .sort((a: tag, b: tag) => a.type > b.type ? 1 : -1)
+                            .map((tag: tag) => (<a key={tag.name + "_" + tag.type} href='' onClick={(event) => { event.preventDefault() }}><span className={'tag tag_' + tag.type}>{tag.name}</span></a>))
                     }
                 </div>
             </div>

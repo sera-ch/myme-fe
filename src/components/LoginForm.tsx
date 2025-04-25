@@ -1,7 +1,8 @@
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Header from "./Header";
-import { useState } from "react";
+import { SyntheticEvent, useState } from "react";
+import form from "../objects/Form";
 
 function LoginForm() {
     const navigate = useNavigate();
@@ -14,7 +15,7 @@ function LoginForm() {
             <div className='row'>
                 <div className='col-4'>
                 </div>
-                <form id='login-form' onSubmit={login} className='col-4'>
+                <form id='login-form' onSubmit={event => login(event, event as unknown as form)} className='col-4'>
                     <div className='input row'>
                         <label htmlFor='username' className='col-3 required'>
                             Username
@@ -37,18 +38,18 @@ function LoginForm() {
         </>
     );
 
-    function validateUsername(event: any) {
-        setInvalidUsername(event.target.value == '')
+    function validateUsername(event: SyntheticEvent) {
+        setInvalidUsername((event.target as HTMLInputElement).value == '')
     }
 
-    function validatePass(event: any) {
-        setInvalidPass(event.target.value == '')
+    function validatePass(event: SyntheticEvent) {
+        setInvalidPass((event.target as HTMLInputElement).value == '')
     }
 
-    function login(event: any) {
+    function login(event: SyntheticEvent, form: form) {
         event.preventDefault();
-        const username = event.target[0].value
-        const password = event.target[1].value
+        const username = form.target[0].value
+        const password = form.target[1].value
         if (username == '' || password == '') {
             if (username == '') {
                 setInvalidUsername(true)

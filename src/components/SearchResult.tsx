@@ -1,9 +1,10 @@
-import { useCallback, useContext, useEffect, useState } from "react";
+import { SyntheticEvent, useCallback, useEffect, useState } from "react";
 import Header from "./Header";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Card from "./Card";
 import { Spinner } from "react-bootstrap";
+import meme from "../objects/Meme";
 
 function SearchResult() {
 
@@ -34,13 +35,13 @@ function SearchResult() {
             })
     }, [])
 
-    const showBigImage = useCallback((event: any, imageUrl: string) => {
+    const showBigImage = useCallback((event: SyntheticEvent, imageUrl: string) => {
         event.preventDefault();
         setDisplay(true);
         setCurrentMeme(imageUrl)
     }, []);
 
-    const hideBigImage = (event: any) => {
+    const hideBigImage = (event: SyntheticEvent) => {
         event.preventDefault();
         setDisplay(false);
         setCurrentMeme('')
@@ -61,7 +62,7 @@ function SearchResult() {
                             "We did not find anything. Try another query?"
                         ) :
                         (
-                            memes.map((item) => (<Card key={item.title} showBigImage={(event) => showBigImage(event, item.image_url)} hideBigImage={hideBigImage} title={item.title} desc={item.desc} imageUrl={item.image_url} tags={item.tags} />))
+                            memes.map((item: meme) => (<Card key={item.title} showBigImage={(event) => showBigImage(event, item.image_url)} title={item.title} desc={item.desc} imageUrl={item.image_url} tags={item.tags} />))
                         )
                     }
                 </div>
