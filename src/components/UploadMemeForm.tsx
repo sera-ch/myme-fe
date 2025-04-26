@@ -8,6 +8,7 @@ function UploadMemeForm() {
     const apiBaseUrl = process.env.API_BASE_URL;
     const [invalidTitle, setInvalidTitle] = useState(false)
     const [invalidFile, setInvalidFile] = useState(false)
+    const [disabled, setDisabled] = useState(false)
     const navigate = useNavigate();
     return (
         <>
@@ -15,45 +16,45 @@ function UploadMemeForm() {
             <div className='row'>
                 <div className='col-4'>
                 </div>
-                <form id='login-form' onSubmit={event => uploadMeme(event, event as unknown as form)} className='col-4'>
+                <form id='login-form' onSubmit={event => uploadMeme(event, event as unknown as form)} className={ disabled ? 'col-4 disabled' : 'col-4'}>
                     <div className='input row'>
                         <label htmlFor='title' className='col-3 required'>
                             Title
                         </label>
-                        <input id='title' name='title' onChange={(event) => validateTitle(event)} type='text' className={invalidTitle ? 'col-9 invalid' : 'col-9'} />
+                        <input id='title' disabled={disabled} name='title' onChange={(event) => validateTitle(event)} type='text' className={invalidTitle ? 'col-9 invalid' : 'col-9'} />
                     </div>
                     <div className='input row'>
                         <label htmlFor='desc' className='col-3'>
                             Description
                         </label>
-                        <textarea id='desc' name='desc' className='col-9' />
+                        <textarea disabled={disabled} id='desc' name='desc' className='col-9' />
                     </div>
                     <div className='input row'>
                         <label htmlFor='characters' className='col-3'>
                             Characters
                         </label>
-                        <textarea id='characters' name='characters' className='col-9' />
+                        <textarea disabled={disabled} id='characters' name='characters' className='col-9' />
                     </div>
                     <div className='input row'>
                         <label htmlFor='sources' className='col-3'>
                             Sources
                         </label>
-                        <textarea id='sources' name='sources' className='col-9' />
+                        <textarea disabled={disabled} id='sources' name='sources' className='col-9' />
                     </div>
                     <div className='input row'>
                         <label htmlFor='misc' className='col-3'>
                             Misc tags
                         </label>
-                        <textarea id='misc' name='misc' className='col-9' />
+                        <textarea disabled={disabled} id='misc' name='misc' className='col-9' />
                     </div>
                     <div className='input row'>
                         <label htmlFor='file' className='col-3 required'>
                             Image
                         </label>
-                        <input id='file' onChange={(event) => validateFile(event)} name='file' type='file' className={invalidFile ? 'col-9 invalid' : 'col-9'} />
+                        <input id='file' disabled={disabled} onChange={(event) => validateFile(event)} name='file' type='file' className={invalidFile ? 'col-9 invalid' : 'col-9'} />
                     </div>
                     <div className='input row'>
-                        <button type='submit' id='submit' className='col-3'>Upload</button>
+                        <button type='submit' disabled={disabled} id='submit' className='col-3'>Upload</button>
                     </div>
                 </form>
                 <div className='col-4'>
@@ -91,6 +92,7 @@ function UploadMemeForm() {
         }
         setInvalidTitle(false)
         setInvalidFile(false)
+        setDisabled(true)
         const request = {
             title: title,
             desc: desc,

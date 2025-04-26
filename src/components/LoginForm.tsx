@@ -8,6 +8,8 @@ function LoginForm() {
     const navigate = useNavigate();
     const [invalidUsername, setInvalidUsername] = useState(false)
     const [invalidPass, setInvalidPass] = useState(false)
+    const [disabled, setDisabled] = useState(false)
+    const [errorMessage, setErrorMessage] = useState('')
     const apiBaseUrl = process.env.API_BASE_URL;
     return (
         <>
@@ -15,21 +17,24 @@ function LoginForm() {
             <div className='row'>
                 <div className='col-4'>
                 </div>
-                <form id='login-form' onSubmit={event => login(event, event as unknown as form)} className='col-4'>
+                <form id='login-form' onSubmit={event => login(event, event as unknown as form)} className={ disabled ? 'col-4 disabled' : 'col-4'}>
+                    <div className='error-message'>
+                        { errorMessage }
+                    </div>
                     <div className='input row'>
                         <label htmlFor='username' className='col-3 required'>
                             Username
                         </label>
-                        <input id='username' name='username' onChange={(event) => validateUsername(event)} type='text' className={invalidUsername ? 'col-9 invalid' : 'col-9'} required />
+                        <input disabled={disabled} id='username' name='username' onChange={(event) => validateUsername(event)} type='text' className={invalidUsername ? 'col-9 invalid' : 'col-9'} required />
                     </div>
                     <div className='input row'>
                         <label htmlFor='password' className='col-3 required'>
                             Password
                         </label>
-                        <input id='password' name='password' onChange={(event) => validatePass(event)} type='password' className={invalidPass ? 'col-9 invalid' : 'col-9'} required />
+                        <input disabled={disabled} id='password' name='password' onChange={(event) => validatePass(event)} type='password' className={invalidPass ? 'col-9 invalid' : 'col-9'} required />
                     </div>
                     <div className='input row'>
-                        <button type='submit' id='submit' className='col-3'>Login</button>
+                        <button disabled={disabled} type='submit' id='submit' className='col-3'>Login</button>
                     </div>
                 </form>
                 <div className='col-4'>
@@ -61,6 +66,7 @@ function LoginForm() {
         }
         setInvalidUsername(false)
         setInvalidPass(false)
+        setDisabled(true);
         const request = {
             username: username,
             password: password
@@ -73,7 +79,15 @@ function LoginForm() {
                 sessionStorage.setItem('userRole', response.data.role);
                 navigate("/")
         }).catch(error => {
-            navigate("/error", { state: { code: error.response.data.code, message: error.response.data.message } })
+            if (error.response.data.code == 300400 || error.response.data.code == 300404) {
+                setInvalidUsername(true)
+                setInvalidPass(true)
+                setDisabled(false)
+                setErrorMessage('Username or password is incorrect')
+            }
+            else {
+                navigate("/error", { state: { code: error.response.data.code, message: error.response.data.message } })
+            }
         })
     }
 }

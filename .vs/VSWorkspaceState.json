@@ -1,9 +1,12 @@
 {
   "ExpandedNodes": [
     "",
+    "\\public",
     "\\src",
-    "\\src\\components"
+    "\\src\\assets",
+    "\\src\\components",
+    "\\src\\objects"
   ],
-  "SelectedNode": "\\src\\components\\Card.tsx",
+  "SelectedNode": "\\src\\components\\List.tsx",
   "PreviewInSolutionExplorer": false
 }
