@@ -15,7 +15,7 @@ function List({page}:{page: string}) {
     const [totalPages, setTotalPages] = useState(1);
     const apiBaseUrl = process.env.API_BASE_URL;
     const navigate = useNavigate();
-    const DEFAULT_PAGE_SIZE = 1;
+    const DEFAULT_PAGE_SIZE = 12;
 
     useEffect(() => {
         setLoading(true)

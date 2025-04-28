@@ -7,6 +7,6 @@
     "\\src\\components",
     "\\src\\objects"
   ],
-  "SelectedNode": "\\.env",
+  "SelectedNode": "\\src\\components\\SearchResult.tsx",
   "PreviewInSolutionExplorer": false
 }
