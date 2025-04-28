@@ -53,7 +53,6 @@ function Header({ search }: {search:boolean}) {
                     <span className='breadcrumb small'>
                         { path }
                     </span>
-                    <a href='' onClick={ navigateBack }><span className='back-nav small'>◂Go back</span></a>
                 </div>
                 <div>
                 </div>
@@ -69,11 +68,6 @@ function Header({ search }: {search:boolean}) {
             </div>
         </>
     )
-
-    function navigateBack(event: SyntheticEvent) {
-        event.preventDefault()
-        navigate('..')
-    }
 
     function navigateToHome(event: SyntheticEvent) {
         event.preventDefault()
@@ -96,11 +90,13 @@ function Header({ search }: {search:boolean}) {
         sessionStorage.removeItem("token");
         setUserRole('');
         setLoggedIn(false);
+        navigate('/', {replace: true});
+        window.location.reload();
     }
 
     function searchMeme(event: SyntheticEvent, form: form) {
         event.preventDefault()
-        navigate('/search', { state: form.target[0].value, replace: true })
+        navigate('/search/0', { state: form.target[0].value, replace: true })
     }
 
     function advancedSearch(event: SyntheticEvent) {

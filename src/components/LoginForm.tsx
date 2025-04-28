@@ -77,7 +77,7 @@ function LoginForm() {
         ).then(response => {
                 sessionStorage.setItem('token', response.data.token);
                 sessionStorage.setItem('userRole', response.data.role);
-                navigate("/")
+                navigate("/0")
         }).catch(error => {
             if (error.response.data.code == 300400 || error.response.data.code == 300404) {
                 setInvalidUsername(true)

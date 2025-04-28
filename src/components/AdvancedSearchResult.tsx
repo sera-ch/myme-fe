@@ -1,9 +1,10 @@
 import { SyntheticEvent, useCallback, useEffect, useState } from "react";
 import Header from "./Header";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import Card from "./Card";
 import tag from "../objects/Tag"
+import Pagination from "./Pagination"
 import meme from "../objects/Meme"
 import { Spinner } from "react-bootstrap";
 
@@ -13,21 +14,31 @@ function AdvancedSearchResult() {
     const [currentMeme, setCurrentMeme] = useState('');
     const [display, setDisplay] = useState(false);
     const [loading, setLoading] = useState(true);
+    const [totalPages, setTotalPages] = useState(0);
     const [found, setFound] = useState(true);
     const apiBaseUrl = process.env.API_BASE_URL;
     const location = useLocation();
     const tags = location.state;
     const navigate = useNavigate();
+    const { page } = useParams();
+    const DEFAULT_PAGE_SIZE = 12;
 
     useEffect(() => {
         const request = {
             tags: tags
         }
-        axios.post(apiBaseUrl + '/meme/v2/search', request)
+        const config = {
+             params: {
+                 "page": page,
+                 "size": DEFAULT_PAGE_SIZE
+             }
+         }
+        axios.post(apiBaseUrl + '/meme/v2/search', request, config)
             .then(response => {
                 if (response.data.content.length > 0) {
                     setFound(true);
                     setMemes(response.data.content)
+                    setTotalPages(response.data.totalPages)
                 } else {
                     setFound(false);
                 }
@@ -76,6 +87,7 @@ function AdvancedSearchResult() {
                                 memes.map((item: meme) => (<Card key={item.title} showBigImage={(event) => showBigImage(event, item.image_url)} title={item.title} desc={item.desc} imageUrl={item.image_url} tags={item.tags} />))
                         )
                     }
+                    <Pagination from="/search/advanced/" total={totalPages}></Pagination>
                 </div>
                 <div className='big-image row' hidden={!display}>
                     <div className='big-image-bg' onClick={hideBigImage}>

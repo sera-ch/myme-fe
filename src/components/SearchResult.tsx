@@ -1,9 +1,10 @@
 import { SyntheticEvent, useCallback, useEffect, useState } from "react";
 import Header from "./Header";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import Card from "./Card";
 import { Spinner } from "react-bootstrap";
+import Pagination from "./Pagination"
 import meme from "../objects/Meme";
 
 function SearchResult() {
@@ -13,19 +14,29 @@ function SearchResult() {
     const [display, setDisplay] = useState(false);
     const [loading, setLoading] = useState(true);
     const [found, setFound] = useState(true);
+    const [totalPages, setTotalPages] = useState(1);
     const apiBaseUrl = process.env.API_BASE_URL;
     const location = useLocation();
     const text = location.state;
     const navigate = useNavigate();
+    const DEFAULT_PAGE_SIZE = 12;
+    const page = useParams()
 
     useEffect(() => {
+        const config = {
+             params: {
+                 "page": page,
+                 "size": DEFAULT_PAGE_SIZE
+             }
+         }
         axios.post(apiBaseUrl + '/meme', {
             text: text
-        })
+        }, config)
             .then(response => {
                 if (response.data.content.length > 0) {
                     setFound(true);
                     setMemes(response.data.content)
+                    setTotalPages(response.data.totalPages)
                 } else {
                     setFound(false);
                 }
@@ -65,6 +76,7 @@ function SearchResult() {
                             memes.map((item: meme) => (<Card key={item.title} showBigImage={(event) => showBigImage(event, item.image_url)} title={item.title} desc={item.desc} imageUrl={item.image_url} tags={item.tags} />))
                         )
                     }
+                    <Pagination from="/search" total={totalPages}></Pagination>
                 </div>
                 <div className='big-image row' hidden={!display}>
                     <div className='big-image-bg' onClick={hideBigImage}>

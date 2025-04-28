@@ -327,7 +327,7 @@ div.list.row .card {
 }
 
 .card-container {
-    position: absolute;
+    position: relative;
 }
 
 @media screen and (min-width: 0px) {
@@ -347,4 +347,30 @@ div.list.row .card {
 
 .disabled label {
     color: #8c8c8c;
+}
+
+.pagination {
+    position: relative;
+}
+
+.page-number {
+    padding: 10px 20px 10px 20px;
+    border-radius: 5px;
+    border: 1px solid #242424;
+    margin: 5px;
+    position: relative;
+    display: inline-block;
+}
+
+.page-number-container {
+    margin: auto;
+    padding-bottom: 50px;
+}
+
+.page-number.disabled {
+    color: #8c8c8c;
+}
+
+.page-number.selected {
+    border: 1px solid #8c8c8c;
 }

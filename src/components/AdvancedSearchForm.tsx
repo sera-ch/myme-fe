@@ -85,7 +85,7 @@ function AdvancedSearchForm() {
 
     function searchMeme(event: SyntheticEvent) {
         event.preventDefault();
-        navigate('/search/advanced/result', { state: selectedTags })
+        navigate('/search/advanced/result/0', { state: selectedTags })
     }
 }
 

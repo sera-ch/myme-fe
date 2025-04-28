@@ -109,7 +109,7 @@ function UploadMemeForm() {
         };
         axios.post(apiBaseUrl + '/meme/v2/upload', request, config)
             .then(() => {
-                navigate('/');
+                navigate('/0');
             }).catch(error => {
                 navigate("/error", { state: { code: error.response.data.code, message: error.response.data.message } })
             })

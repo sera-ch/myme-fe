@@ -1,12 +1,17 @@
-import Header from './Header';
+import Header from './Header'
 import List from './List'
+import { useParams } from "react-router-dom";
+
+
 
 function Home() {
+
+    const { page } = useParams()
 
     return (<>
         <Header search={ true }></Header>
         <div className='row col-12'>
-            <List></List>
+            <List page={ page || '0' }></List>
         </div>
     </>);
 }
